@@ -1,0 +1,145 @@
+﻿@{
+    ViewData["Title"] = "Dynamic Objects - Generation";
+}
+<h5>Dynamic Objects - Generation</h5>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label class="control-label">Group</label>
+            @*<input class="form-control" placeholder="Group Name" id="group-name" />*@
+            @Html.DropDownList("group-name", new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Group1", Value="Group1"  },
+                new SelectListItem {Text = "Group2", Value="Group2"  },
+                new SelectListItem {Text = "Group3", Value="Group3"  },
+                
+            }, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label class="control-label">Page</label>
+            <input class="form-control" placeholder="Page Name" id="page-name" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10" style="padding-left:0;padding-right:0;">
+        <table id="my-table" class="table table-borderless table-responsive">
+            <thead>
+                <tr>
+                    <td>Field Name</td>
+                    <td>Field Type</td>
+                    <td>Max Length</td>
+                    <td>Min Length</td>
+                    <td>Required</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" placeholder="Field Name" /></td>
+                    <td>
+                        @Html.DropDownList("data-type", new List<SelectListItem>
+                        {
+                            new SelectListItem {Text = "string", Value="string"  },
+                            new SelectListItem {Text = "int", Value="int"  },
+                            new SelectListItem {Text = "decimal", Value="decimal"  },
+                            new SelectListItem {Text = "DateTime", Value="DateTime"  },
+                            new SelectListItem {Text = "bool", Value="bool"  }
+                        }, new { @class = "form-control" })
+                    </td>
+                    <td><input type="text" class="form-control" placeholder="Max Length" value="50"/></td>
+                    <td><input type="text" class="form-control" placeholder="Min Length" value="1"/></td>
+                    <td class="text-right"><input type="checkbox" /></td>
+                    <td><input type="button" class="btn btn-danger btn-sm btn-remove-row-from-table" value="X" /></td>
+
+                </tr>                
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+        <button class="btn btn-success btn-sm" id="btn-add-row">
+            <span class="glyphicon glyphicon-save"></span> + Add
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" id="btn-save" value="Save">
+            <span class="glyphicon glyphicon-save"></span> Save
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-11 dange" id="div-message"></div>
+
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        $('#btn-add-row').click(function () {
+            var $tableBody = $('#my-table').find("tbody"),
+                $trLast = $tableBody.find("tr:last"),
+                $trNew = $trLast.clone();
+            $trLast.after($trNew);
+        });
+        $("#my-table").on('click', '.btn-remove-row-from-table', function () {
+            $(this).closest('tr').remove();
+        });
+        $('#btn-save').click(function () {
+            var tableArray = [];
+            $('#my-table tbody tr').each(function () {
+                console.log('Checkbox : ' + $(this).find("td").eq(4).find('input:checkbox').is(':checked'));
+                var inputData = {
+                    FieldName: $(this).find("td").eq(0).find('input:text').val(),
+                    FieldType: $(this).find("td").eq(1).find('#data-type option:selected').text(),
+                    MaxLength: parseInt($(this).find("td").eq(2).find('input:text').val()),
+                    MinLength: parseInt($(this).find("td").eq(3).find('input:text').val()),
+                    IsRequired: $(this).find("td").eq(4).find('input:checkbox').is(':checked')
+                }
+                tableArray.push(inputData);
+            });
+            var inputJSON =
+            {
+                Group: $('#group-name option:selected').text(),//$('#group-name').val(),
+                Page: $('#page-name').val(),
+                FieldsDetailViewModel: tableArray
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Home/IndexPost",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(inputJSON),
+                success: function (response) {
+                    console.log(JSON.stringify(response));
+
+                    if (response.isSuccess == true) {
+                        $('#div-message').html('<div class="col-md-12 alert alert-success" role="alert">' + response.message + '</div>');
+                    }
+                    else {
+                        $('#div-message').html('<div class="col-md-12 alert alert-warning" role="alert">' + response.message + '</div>');
+                    }
+                    $('#div-message').slideUp(2000);
+                    setTimeout(function () { $('#div-message').html(''); $('#div-message').removeAttr('style', 'display:none'); }, 2200);
+
+                },
+                failure: function (response) {
+                    $('#div-message').html('<div class="col-md-12 alert alert-danger" role="alert">An error occured while processing your request</div>');
+                    $('#div-message').slideUp(2000);
+                    setTimeout(function () { $('#div-message').html(''); $('#div-message').removeAttr('style', 'display:none'); }, 2200);
+                }
+            });
+        });
+
+
+    });
+</script>
