@@ -35,6 +35,7 @@ namespace DynamicObjects.Dynamics
             using (TextWriter text = new StreamWriter(file))
             {
                 text.WriteLine("@model DynamicObjects.Models." + dynamicObjectsViewModel.Page + "." + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "ViewModel");
+                text.WriteLine("@{ \n ViewData[\"Title\"] = \""+dynamicObjectsViewModel.Page+"\";\n}");
                 text.WriteLine();
                 text.WriteLine("<div class=" + "row" + ">");
                 text.WriteLine(EmptyColumns(4));

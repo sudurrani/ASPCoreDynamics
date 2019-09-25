@@ -50,7 +50,14 @@ namespace DynamicObjects.Dynamics
                 {
                     using (StreamWriter tw = new StreamWriter(file, true))
                     {
-                        tw.WriteLine("\t\t[MaxLength(" + row.MaxLength + "),MinLength(" + row.MinLength + ")]");
+                        if (row.FieldType.Equals("string"))
+                        {
+                            tw.WriteLine("\t\t[MaxLength(" + row.MaxLength + "),MinLength(" + row.MinLength + ")]");
+                        }
+                        else
+                        {
+                            tw.WriteLine("\t\t[Range(" + row.MinLength + "," + row.MaxLength + ")]");
+                        }                        
                         if (row.IsRequired)
                             tw.WriteLine("\t\t[Required]");
 

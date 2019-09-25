@@ -1,4 +1,7 @@
 @model DynamicObjects.Models.Referral.Group2ReferralViewModel
+@{ 
+ ViewData["Title"] = "Referral";
+}
 
 <div class=row>
 <div class="col-md-4"></div>
@@ -21,14 +24,14 @@
 					<span asp-validation-for=LastName class=text-danger></span>
 				</div>
 				<div class=form-group>
-					<label asp-for=Age class=control-label></label>
-					<input asp-for=Age class=form-control />
-					<span asp-validation-for=Age class=text-danger></span>
-				</div>
-				<div class=form-group>
 					<label asp-for=Email class=control-label></label>
 					<input asp-for=Email class=form-control />
 					<span asp-validation-for=Email class=text-danger></span>
+				</div>
+				<div class=form-group>
+					<label asp-for=Age class=control-label></label>
+					<input asp-for=Age class=form-control />
+					<span asp-validation-for=Age class=text-danger></span>
 				</div>
 				<div class=form-group>
 					<input type=submit value="Save" class="btn btn-primary" />
