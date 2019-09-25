@@ -7,13 +7,12 @@
     <div class="col-md-5">
         <div class="form-group">
             <label class="control-label">Group</label>
-            @*<input class="form-control" placeholder="Group Name" id="group-name" />*@
             @Html.DropDownList("group-name", new List<SelectListItem>
             {
                 new SelectListItem {Text = "Group1", Value="Group1"  },
                 new SelectListItem {Text = "Group2", Value="Group2"  },
                 new SelectListItem {Text = "Group3", Value="Group3"  },
-                
+
             }, new { @class = "form-control" })
         </div>
     </div>
@@ -50,25 +49,26 @@
                             new SelectListItem {Text = "bool", Value="bool"  }
                         }, new { @class = "form-control" })
                     </td>
-                    <td><input type="text" class="form-control" placeholder="Max Length" value="50"/></td>
-                    <td><input type="text" class="form-control" placeholder="Min Length" value="1"/></td>
+                    <td><input type="text" class="form-control" placeholder="Max Length" value="50" /></td>
+                    <td><input type="text" class="form-control" placeholder="Min Length" value="1" /></td>
                     <td class="text-right"><input type="checkbox" /></td>
+                    <td><input type="button" class="btn btn-success btn-sm btn-clone-row" value="+" /></td>
                     <td><input type="button" class="btn btn-danger btn-sm btn-remove-row-from-table" value="X" /></td>
 
-                </tr>                
+                </tr>
             </tbody>
         </table>
 
     </div>
 </div>
-<div class="row">
+@*<div class="row">
     <div class="col-md-10"></div>
     <div class="col-md-2">
         <button class="btn btn-success btn-sm" id="btn-add-row">
             <span class="glyphicon glyphicon-save"></span> + Add
         </button>
     </div>
-</div>
+</div>*@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-2">
@@ -85,14 +85,23 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(function () {
+        /*
         $('#btn-add-row').click(function () {
             var $tableBody = $('#my-table').find("tbody"),
                 $trLast = $tableBody.find("tr:last"),
                 $trNew = $trLast.clone();
             $trLast.after($trNew);
         });
+        */
         $("#my-table").on('click', '.btn-remove-row-from-table', function () {
             $(this).closest('tr').remove();
+        });
+        $('#my-table').on('click', '.btn-clone-row', function () {
+            var $tr = $(this).closest('tr');
+            var $clone = $tr.clone();
+            //$clone.find(':text').val('');
+            $clone.find("td").eq(0).find('input:text').val('');
+            $tr.after($clone);
         });
         $('#btn-save').click(function () {
             var tableArray = [];
@@ -143,3 +152,8 @@
 
     });
 </script>
+<style>
+    .table th, .table td{
+        padding:0 0 0 15px;
+    }    
+</style>
