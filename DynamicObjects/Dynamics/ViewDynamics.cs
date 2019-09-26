@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace DynamicObjects.Dynamics
 {
-    public class ViewDynamics
+    public static class ViewDynamics
     {
-        public static bool Generate(string directory,DynamicObjectsViewModel dynamicObjectsViewModel)
+        public static bool Generate(string directory, DynamicObjectsViewModel dynamicObjectsViewModel)
         {
             try
             {
-                var file = Path.Combine(directory, dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + ".cshtml");
+                var file = Path.Combine(directory, dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + ".cshtml");
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
-                
+
                 if (!System.IO.File.Exists(file))
-                    System.IO.File.Create(file).Dispose();                
+                    System.IO.File.Create(file).Dispose();
             }
             catch (Exception exception)
             {
@@ -31,16 +31,16 @@ namespace DynamicObjects.Dynamics
         {
             //directory = GetDirectory("Views\\Home");            
 
-            var file = Path.Combine(directory, dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + ".cshtml");
+            var file = Path.Combine(directory, dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + ".cshtml");
             using (TextWriter text = new StreamWriter(file))
             {
-                text.WriteLine("@model DynamicObjects.Models." + dynamicObjectsViewModel.Page + "." + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "ViewModel");
-                text.WriteLine("@{ \n ViewData[\"Title\"] = \""+dynamicObjectsViewModel.Page+"\";\n}");
+                text.WriteLine("@model DynamicObjects.Models." + dynamicObjectsViewModel.Page + "." + dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "ViewModel");
+                text.WriteLine("@{ \n ViewData[\"Title\"] = \"" + dynamicObjectsViewModel.Page + "\";\n}");
                 text.WriteLine();
                 text.WriteLine("<div class=" + "row" + ">");
                 text.WriteLine(EmptyColumns(4));
                 text.WriteLine("\t\t<div class=" + "col-md-4" + ">");
-                text.WriteLine("\t\t\t<form asp-action=" + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + ">");
+                text.WriteLine("\t\t\t<form asp-action=" + dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + ">");
                 text.WriteLine("\t\t\t\t<div asp-validation-summary=" + "ModelOnly" + " class=" + "text-danger" + "></div>");
             }
             foreach (var row in dynamicObjectsViewModel.FieldsDetailViewModel)
@@ -63,12 +63,12 @@ namespace DynamicObjects.Dynamics
             using (StreamWriter text = new StreamWriter(file, true))
             {
                 text.WriteLine(@""
-                                +"\n\t\t</form>"
-                                +"\n\t</div>"
-                                +"\n</div>"
+                                + "\n\t\t</form>"
+                                + "\n\t</div>"
+                                + "\n</div>"
                                );
             }
-            
+
             return true;
         }
         private static string FormGroup()
@@ -97,7 +97,7 @@ namespace DynamicObjects.Dynamics
         }
         private static string CLoseDiv(string sequence)
         {
-            return string.Format(sequence+"</div>");
+            return string.Format(sequence + "</div>");
         }
     }
 }

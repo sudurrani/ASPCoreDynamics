@@ -1,21 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using DynamicObjects.Models;
-using System.Reflection;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection.Emit;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System.Text;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace DynamicObjects.Controllers
 {
@@ -42,8 +33,8 @@ namespace DynamicObjects.Controllers
         {
             string message = string.Empty;
             object responseJSON;
-            if (string.IsNullOrEmpty(dynamicObjectsViewModel.Group))
-                responseJSON = new { isSuccess = false, message = "Group name is required" };
+            if (string.IsNullOrEmpty(dynamicObjectsViewModel.Service))
+                responseJSON = new { isSuccess = false, message = "Service name is required" };
             else if (string.IsNullOrEmpty(dynamicObjectsViewModel.Page))
                 responseJSON = new { isSuccess = false, message = "Page name is required" };
             else if (dynamicObjectsViewModel.FieldsDetailViewModel.Count > 0)
@@ -98,10 +89,6 @@ namespace DynamicObjects.Controllers
             string projectRootPath = _hostingEnvironment.ContentRootPath;
             return projectRootPath + "\\" + name;
         }
-        public IActionResult TestView()
-        {
-            return View();
-        }
         public IActionResult Privacy()
         {
             return View();
@@ -112,7 +99,5 @@ namespace DynamicObjects.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }
-

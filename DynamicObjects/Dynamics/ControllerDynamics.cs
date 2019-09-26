@@ -9,7 +9,7 @@ namespace DynamicObjects.Dynamics
 {
     public static class ControllerDynamics
     {
-        public static bool Generate(string directory, DynamicObjectsViewModel dynamicObjectsViewModel) 
+        public static bool Generate(string directory, DynamicObjectsViewModel dynamicObjectsViewModel)
         {
             try
             {
@@ -20,7 +20,7 @@ namespace DynamicObjects.Dynamics
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;                
+                return false;
             }
             return true;
 
@@ -29,11 +29,12 @@ namespace DynamicObjects.Dynamics
         {
             try
             {
-                var file = Path.Combine(directory, dynamicObjectsViewModel.Page + "Controller.cs");               
+                var file = Path.Combine(directory, dynamicObjectsViewModel.Page + "Controller.cs");
                 string references = @""
                                  + "using System.Threading.Tasks;\n"
                                  + "using DynamicObjects.Models;\n"
-                                 + "using Microsoft.AspNetCore.Mvc;\n"
+                                 + "using Microsoft.AspNetCore.Http;\n"
+                                 + "using Microsoft.AspNetCore.Mvc;\n"                                 
                                  + "namespace DynamicObjects.Controllers\n{"
                                  + "\n\tpublic class " + dynamicObjectsViewModel.Page + "Controller : Controller\n\t{"
                                  + "\n\t}\n}"
@@ -50,11 +51,11 @@ namespace DynamicObjects.Dynamics
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                return false;                
+                return false;
             }
             return true;
         }
-        public static bool Index(string directory,DynamicObjectsViewModel dynamicObjectsViewModel)
+        public static bool Index(string directory, DynamicObjectsViewModel dynamicObjectsViewModel)
         {
             try
             {
@@ -62,8 +63,8 @@ namespace DynamicObjects.Dynamics
                 "\n\t\tpublic IActionResult Index()" +
                 "\n\t\t{\n " +
                 "\n\t\t\tstring viewName = string.Empty; " +
-                "\n\t\t\tviewName = TempData[\"Group\"]+" + "\"" + dynamicObjectsViewModel.Page + "\";" +
-                "\n\t\t\tTempData.Keep(\"Group\");" +
+                "\n\t\t\tviewName = HttpContext.Session.GetString(\"Service\")+" + "\"" + dynamicObjectsViewModel.Page + "\";" +
+                //"\n\t\t\tTempData.Keep(\"Group\");" +
                 "\n\t\t\treturn View(" + "viewName" + ");\n\t\t}";
                 var file = Path.Combine(directory, dynamicObjectsViewModel.Page + "Controller.cs");
                 var txtLines = System.IO.File.ReadAllLines(file).ToList();
@@ -77,7 +78,7 @@ namespace DynamicObjects.Dynamics
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                return false;                
+                return false;
             }
             return true;
         }
@@ -85,7 +86,7 @@ namespace DynamicObjects.Dynamics
         {
             try
             {
-                string getAction = "\n\t\t[HttpGet]\n\t\tpublic IActionResult " + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "()\n\t\t{\n\t\t\t return View();\n\t\t}";
+                string getAction = "\n\t\t[HttpGet]\n\t\tpublic IActionResult " + dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "()\n\t\t{\n\t\t\t return View();\n\t\t}";
                 var file = Path.Combine(directory, dynamicObjectsViewModel.Page + "Controller.cs");
                 var txtLines = System.IO.File.ReadAllLines(file).ToList();
                 int actionIndexToBeAdded = txtLines.Count() - 2;
@@ -106,7 +107,7 @@ namespace DynamicObjects.Dynamics
         {
             try
             {
-                string postAction = "\n\t\t[HttpPost]\n\t\tpublic IActionResult " + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "(Models." + dynamicObjectsViewModel.Page + "." + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "ViewModel " + dynamicObjectsViewModel.Group.ToLower() + dynamicObjectsViewModel.Page + "ViewModel" + ")\n\t\t{\n\t\t\treturn View();\n\t\t}";
+                string postAction = "\n\t\t[HttpPost]\n\t\tpublic IActionResult " + dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "(Models." + dynamicObjectsViewModel.Page + "." + dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "ViewModel " + dynamicObjectsViewModel.Service.ToLower() + dynamicObjectsViewModel.Page + "ViewModel" + ")\n\t\t{\n\t\t\treturn View();\n\t\t}";
                 var file = Path.Combine(directory, dynamicObjectsViewModel.Page + "Controller.cs");
                 var txtLines = System.IO.File.ReadAllLines(file).ToList();
                 int actionIndexToBeAdded = txtLines.Count() - 2;
@@ -140,6 +141,6 @@ namespace DynamicObjects.Dynamics
         //    }
         //    return true;
         //}
-        
+
     }
 }

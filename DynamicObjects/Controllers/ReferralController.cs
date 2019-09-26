@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using DynamicObjects.Common;
 using DynamicObjects.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 namespace DynamicObjects.Controllers
 {
@@ -11,33 +13,38 @@ namespace DynamicObjects.Controllers
 		{
  
 			string viewName = string.Empty; 
-			viewName = TempData["Group"]+"Referral";
-			TempData.Keep("Group");
+			viewName = HttpContext.Session.GetString("Service")+"Referral";
 			return View(viewName);
 		}
 
 		[HttpGet]
-		public IActionResult Group1Referral()
+		public IActionResult Service1Referral()
 		{
 			 return View();
 		}
 
 		[HttpPost]
-		public IActionResult Group1Referral(Models.Referral.Group1ReferralViewModel group1ReferralViewModel)
+		public IActionResult Service1Referral(Models.Referral.Service1ReferralViewModel service1ReferralViewModel)
 		{
-			return View();
+            dynamic dbContext = DbContext.Instance(HttpContext.Session.GetString("Tenant"));
+            dbContext.Service1Referrals.Add(service1ReferralViewModel);
+            int result = dbContext.SaveChanges();
+            return View();
 		}
 
 		[HttpGet]
-		public IActionResult Group2Referral()
+		public IActionResult Service2Referral()
 		{
 			 return View();
 		}
 
 		[HttpPost]
-		public IActionResult Group2Referral(Models.Referral.Group2ReferralViewModel group2ReferralViewModel)
+		public IActionResult Service2Referral(Models.Referral.Service2ReferralViewModel service2ReferralViewModel)
 		{
-			return View();
+            dynamic dbContext = DbContext.Instance(HttpContext.Session.GetString("Tenant"));
+            dbContext.Service2Referrals.Add(service2ReferralViewModel);
+            int result = dbContext.SaveChanges();
+            return View();
 		}
 	}
 }

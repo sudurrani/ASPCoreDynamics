@@ -1,4 +1,4 @@
-@model DynamicObjects.Models.Referral.Group1ReferralViewModel
+@model DynamicObjects.Models.Referral.Service2ReferralViewModel
 @{ 
  ViewData["Title"] = "Referral";
 }
@@ -6,7 +6,7 @@
 <div class=row>
 <div class="col-md-4"></div>
 		<div class=col-md-4>
-			<form asp-action=Group1Referral>
+			<form asp-action=Service2Referral>
 				<div asp-validation-summary=ModelOnly class=text-danger></div>
 				<div class=form-group>
 					<label asp-for=FullName class=control-label></label>
@@ -14,9 +14,9 @@
 					<span asp-validation-for=FullName class=text-danger></span>
 				</div>
 				<div class=form-group>
-					<label asp-for=Email class=control-label></label>
-					<input asp-for=Email class=form-control />
-					<span asp-validation-for=Email class=text-danger></span>
+					<label asp-for=Contact class=control-label></label>
+					<input asp-for=Contact class=form-control />
+					<span asp-validation-for=Contact class=text-danger></span>
 				</div>
 				<div class=form-group>
 					<label asp-for=Age class=control-label></label>

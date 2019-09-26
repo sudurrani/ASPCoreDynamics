@@ -9,7 +9,7 @@ namespace DynamicObjects.Models
     public class DynamicObjectsViewModel
     {
         [Required]
-        public string Group { get; set; }
+        public string Service { get; set; }
         [Required]
         public string Page { get; set; }
         public List<FieldsDetailViewModel> FieldsDetailViewModel { get; set; }

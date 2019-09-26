@@ -9,12 +9,13 @@ namespace DynamicObjects.Dynamics
 {
     public static class ModelDynamics
     {
+
         public static bool Generate(string directory, DynamicObjectsViewModel dynamicObjectsViewModel)
         {
             //directory = GetDirectory("Models\\" + dynamicObjectsViewModel.Page);
             try
             {
-                var file = Path.Combine(directory, dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "ViewModel.cs");
+                var file = Path.Combine(directory, dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "ViewModel.cs");
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
 
@@ -32,7 +33,7 @@ namespace DynamicObjects.Dynamics
         {
             try
             {
-                var file = Path.Combine(directory, dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "ViewModel.cs");
+                var file = Path.Combine(directory, dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "ViewModel.cs");
                 using (TextWriter text = new StreamWriter(file))
                 {
                     text.WriteLine(@""
@@ -42,33 +43,35 @@ namespace DynamicObjects.Dynamics
                                     + "\nusing System.Threading.Tasks;"
                                     + "\nusing System.ComponentModel.DataAnnotations;"
                                     + "\nnamespace DynamicObjects.Models." + dynamicObjectsViewModel.Page + "" + "\n{" +
-                                "\n\tpublic class " + dynamicObjectsViewModel.Group + dynamicObjectsViewModel.Page + "ViewModel" +
+                                "\n\tpublic class " + dynamicObjectsViewModel.Service + dynamicObjectsViewModel.Page + "ViewModel" +
                                 "\n\t{"
                                   );
+                    text.WriteLine("\t\t[Key]\n\t\t[ScaffoldColumn(true)]");
+                    text.WriteLine("\t\tpublic int Id {get;set;}");
                 }
                 foreach (var row in dynamicObjectsViewModel.FieldsDetailViewModel)
                 {
-                    using (StreamWriter tw = new StreamWriter(file, true))
+                    using (StreamWriter text = new StreamWriter(file, true))
                     {
                         if (row.FieldType.Equals("string"))
                         {
-                            tw.WriteLine("\t\t[MaxLength(" + row.MaxLength + "),MinLength(" + row.MinLength + ")]");
+                            text.WriteLine("\t\t[MaxLength(" + row.MaxLength + "),MinLength(" + row.MinLength + ")]");
                         }
                         else
                         {
-                            tw.WriteLine("\t\t[Range(" + row.MinLength + "," + row.MaxLength + ")]");
-                        }                        
+                            text.WriteLine("\t\t[Range(" + row.MinLength + "," + row.MaxLength + ")]");
+                        }
                         if (row.IsRequired)
-                            tw.WriteLine("\t\t[Required]");
+                            text.WriteLine("\t\t[Required]");
 
-                        tw.WriteLine("\t\tpublic " + row.FieldType + " " + row.FieldName + " {get;set;}");
-                        tw.WriteLine();
+                        text.WriteLine("\t\tpublic " + row.FieldType + " " + row.FieldName + " {get;set;}");
+                        text.WriteLine();
                     }
                 }
-                using (StreamWriter tw = new StreamWriter(file, true))
+                using (StreamWriter text = new StreamWriter(file, true))
                 {
-                    tw.WriteLine("\t}");
-                    tw.WriteLine("}");
+                    text.WriteLine("\t}");
+                    text.WriteLine("}");
                 }
             }
             catch (Exception exception)

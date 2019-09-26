@@ -6,25 +6,23 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace DynamicObjects.Models.Referral
 {
-	public class Group2ReferralViewModel
+	public class Service1ReferralViewModel
 	{
-		[MaxLength(50),MinLength(1)]
+		[Key]
+		[ScaffoldColumn(true)]
+		public int Id {get;set;}
+		[MaxLength(50),MinLength(5)]
 		[Required]
 		public string FirstName {get;set;}
 
-		[MaxLength(50),MinLength(1)]
-		public string MiddleName {get;set;}
-
-		[MaxLength(50),MinLength(1)]
-		[Required]
+		[MaxLength(50),MinLength(0)]
 		public string LastName {get;set;}
 
-		[MaxLength(50),MinLength(1)]
+		[MaxLength(50),MinLength(9)]
 		[Required]
-		public string Email {get;set;}
+		public string Contact {get;set;}
 
-		[Range(1,50)]
-		[Required]
+		[Range(0,50)]
 		public int Age {get;set;}
 
 	}
